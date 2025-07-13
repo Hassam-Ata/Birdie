@@ -62,7 +62,7 @@ CLOUDINARY_API_KEY=<your_cloudinary_api_key>
 CLOUDINARY_API_SECRET=<your_cloudinary_api_secret>
 ```
 
-### Mobile (`/backend/.env`)
+### Mobile (`/mobile/.env`)
 
 ```
 EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=<your_clerk_publishable_key>
