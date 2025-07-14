@@ -16,6 +16,8 @@ app.use(cors());
 app.use(clerkMiddleware());
 app.use(arcjetMiddleware);
 
+app.get("/", (req, res) => res.send("Hello from server"));
+
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
