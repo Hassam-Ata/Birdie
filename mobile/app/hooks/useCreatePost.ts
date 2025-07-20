@@ -1,7 +1,9 @@
 import { useApiClient } from "@/utils/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { View, Text, Alert } from "react-native";
+import { Alert } from "react-native";
+import * as ImagePicker from "expo-image-picker";
+
 const useCreatePost = () => {
   const [content, setContent] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -47,5 +49,62 @@ const useCreatePost = () => {
       Alert.alert("Error", "Failed to create post.Please try again");
     },
   });
+
+  const handleImagePicker = async (useCamera: boolean = false) => {
+    const permissionResult = useCamera
+      ? await ImagePicker.requestCameraPermissionsAsync()
+      : await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.status !== "granted") {
+      const source = useCamera ? "camera" : "photo library";
+      Alert.alert(
+        "Permission needed",
+        `Please grant permission to access your ${source}`
+      );
+      return;
+    }
+
+    const pickerOptions = {
+      allowsEditing: true,
+      aspect: [16, 9] as [number, number],
+      quality: 0.8,
+    };
+    const result = useCamera
+      ? await ImagePicker.launchCameraAsync(pickerOptions)
+      : await ImagePicker.launchImageLibraryAsync({
+          ...pickerOptions,
+          mediaTypes: ["images"],
+        });
+
+    if (!result.canceled) setSelectedImage(result.assets[0].uri);
+  };
+
+  const createPost = () => {
+    if (!content.trim() && !selectedImage) {
+      Alert.alert(
+        "Empty Post",
+        "Please write something or add an image before posting"
+      );
+      return;
+    }
+
+    const postData: { content: string; imageUri?: string } = {
+      content: content.trim(),
+    };
+
+    if (selectedImage) postData.imageUri = selectedImage;
+    createPostMutation.mutate(postData);
+  };
+
+  return {
+    content,
+    setContent,
+    selectedImage,
+    isCreating: createPostMutation.isPending,
+    pickImageFromGallery: () => handleImagePicker(false),
+    takePhoto: () => handleImagePicker(true),
+    removeImage: () => setSelectedImage(null),
+    createPost,
+  };
 };
 export default useCreatePost;
