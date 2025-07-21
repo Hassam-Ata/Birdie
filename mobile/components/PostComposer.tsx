@@ -1,4 +1,4 @@
-import useCreatePost from "@/app/hooks/useCreatePost";
+import useCreatePost from "@/hooks/useCreatePost";
 import { useUser } from "@clerk/clerk-expo";
 import { Feather } from "@expo/vector-icons";
 import {

@@ -1,4 +1,4 @@
-import useSignout from "@/app/hooks/useSignout";
+import useSignout from "@/hooks/useSignout";
 import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 const SignoutButton = () => {
