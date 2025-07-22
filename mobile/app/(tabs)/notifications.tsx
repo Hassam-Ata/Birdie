@@ -3,6 +3,7 @@ const NotificationsScreen = () => {
   return (
     <View>
       <Text>NotificationsScreen</Text>
+      {/* To be implemented */}
     </View>
   );
 };
